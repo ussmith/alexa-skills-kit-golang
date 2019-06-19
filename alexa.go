@@ -68,8 +68,9 @@ type Context struct {
 		Device struct {
 			DeviceID            string `json:"deviceId"`
 			SupportedInterfaces struct {
-				AudioPlayer struct {
-				} `json:"AudioPlayer"`
+				AudioPlayer struct {} `json:"AudioPlayer"`
+				Display struct {} `json:"Display"`
+				VideoApp struct {} `json:"VideoApp"`
 			} `json:"supportedInterfaces"`
 		} `json:"device"`
 		Application struct {
