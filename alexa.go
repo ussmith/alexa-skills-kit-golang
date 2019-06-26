@@ -36,7 +36,6 @@ type RequestHandler interface {
 	OnLaunch(context.Context, *Request, *Session, *Context, *Response) error
 	OnIntent(context.Context, *Request, *Session, *Context, *Response) error
 	OnSessionEnded(context.Context, *Request, *Session, *Context, *Response) error
-	SupportsVideo(ctx *Context) bool
 }
 
 // RequestEnvelope contains the data passed from Alexa to the request handler.
@@ -208,7 +207,7 @@ type DialogDirective struct {
 
 // SupportsVideo returns true if this skill was initiated from
 // a device that supports video, false otherwise
-func (alexa *Alexa) SupportsVideo(ctx *Context) bool {
+func SupportsVideo(ctx *Context) bool {
 	return (ctx.System.Device.SupportedInterfaces.VideoApp != nil)
 }
 
