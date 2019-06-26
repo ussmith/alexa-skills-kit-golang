@@ -36,6 +36,7 @@ type RequestHandler interface {
 	OnLaunch(context.Context, *Request, *Session, *Context, *Response) error
 	OnIntent(context.Context, *Request, *Session, *Context, *Response) error
 	OnSessionEnded(context.Context, *Request, *Session, *Context, *Response) error
+	SupportsVideo(ctx *Context) bool
 }
 
 // RequestEnvelope contains the data passed from Alexa to the request handler.

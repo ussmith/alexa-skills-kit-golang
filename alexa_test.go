@@ -519,6 +519,11 @@ func (h *emptyRequestHandler) OnSessionStarted(context.Context, *Request, *Sessi
 	return nil
 }
 
+func (h *emptyRequestHandler) SupportsVideo(*Context) bool {
+	//TODO revisit this test case
+	return false
+}
+
 func (h *emptyRequestHandler) OnLaunch(context.Context, *Request, *Session, *Context, *Response) error {
 	h.OnLaunchCalled = true
 	if h.OnLaunchThrowsErr {
