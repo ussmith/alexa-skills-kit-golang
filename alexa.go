@@ -350,6 +350,13 @@ func (r *Response) AddAudioPlayer(playerType, playBehavior, streamToken, url str
 	r.Directives = append(r.Directives, d)
 }
 
+func (r *Response) AddAudioPlayerDirective(playerType string) {
+	d := AudioPlayerDirective{
+		Type:         playerType,
+	}
+	r.Directives = append(r.Directives, d)
+}
+
 // AddDialogDirective adds a Dialog directive to the Response.
 func (r *Response) AddDialogDirective(dialogType, slotToElicit, slotToConfirm string, intent *Intent) {
 	d := DialogDirective{
