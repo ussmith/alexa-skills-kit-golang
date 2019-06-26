@@ -205,6 +205,12 @@ type DialogDirective struct {
 	UpdatedIntent *Intent `json:"updatedIntent,omitempty"`
 }
 
+// SupportsVideo returns true if this skill was initiated from
+// a device that supports video, false otherwise
+func (alexa *Alexa) SupportsVideo(ctx *Context) bool {
+	return (ctx.System.Device.SupportedInterfaces.VideoApp != nil)
+}
+
 // ProcessRequest handles a request passed from Alexa
 func (alexa *Alexa) ProcessRequest(ctx context.Context, requestEnv *RequestEnvelope) (*ResponseEnvelope, error) {
 	if requestEnv == nil {
