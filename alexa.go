@@ -51,11 +51,12 @@ type Session struct {
 	New        bool   `json:"new"`
 	SessionID  string `json:"sessionId"`
 	Attributes struct {
-		String map[string]interface{} `json:"string"`
+		String map[string]string `json:"string"`
 	} `json:"attributes"`
 	User struct {
-		UserID      string `json:"userId"`
-		AccessToken string `json:"accessToken"`
+		UserID      string            `json:"userId"`
+		AccessToken string            `json:"accessToken"`
+		Permissions map[string]string `json:"permissions,omitempty"`
 	} `json:"user"`
 	Application struct {
 		ApplicationID string `json:"applicationId"`
@@ -95,10 +96,10 @@ type Context struct {
 
 // Request contains the data in the request within the main request.
 type Request struct {
-	Locale      string `json:"locale"`
-	Timestamp   string `json:"timestamp"`
 	Type        string `json:"type"`
+	Timestamp   string `json:"timestamp"`
 	RequestID   string `json:"requestId"`
+	Locale      string `json:"locale"`
 	DialogState string `json:"dialogState"`
 	Intent      Intent `json:"intent"`
 	Name        string `json:"name"`
@@ -211,6 +212,12 @@ func SupportsVideo(ctx *Context) bool {
 	return (ctx.System.Device.SupportedInterfaces.VideoApp != nil)
 }
 
+// SupportsDisplay returns true if this skill was initiated from
+// a device that supports video, false otherwise
+func SupportsDisplay(ctx *Context) bool {
+	return (ctx.System.Device.SupportedInterfaces.Display != nil)
+}
+
 // ProcessRequest handles a request passed from Alexa
 func (alexa *Alexa) ProcessRequest(ctx context.Context, requestEnv *RequestEnvelope) (*ResponseEnvelope, error) {
 	if requestEnv == nil {
@@ -235,7 +242,7 @@ func (alexa *Alexa) ProcessRequest(ctx context.Context, requestEnv *RequestEnvel
 	request := requestEnv.Request
 	session := requestEnv.Session
 	if session.Attributes.String == nil {
-		session.Attributes.String = make(map[string]interface{})
+		session.Attributes.String = make(map[string]string)
 	}
 	context := requestEnv.Context
 
@@ -352,7 +359,7 @@ func (r *Response) AddAudioPlayer(playerType, playBehavior, streamToken, url str
 
 func (r *Response) AddAudioPlayerDirective(playerType string) {
 	d := AudioPlayerDirective{
-		Type:         playerType,
+		Type: playerType,
 	}
 	r.Directives = append(r.Directives, d)
 }

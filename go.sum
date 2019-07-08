@@ -8,4 +8,6 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/testify v1.2.1 h1:52QO5WkIUcHGIR7EnGagH88x1bUzqGXTC5/1bDTUQ7U=
 github.com/stretchr/testify v1.2.1/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
+github.com/ussmith/alexa-skills-kit-golang v0.0.0-20190626201255-fae130b73e4c h1:mLDW8J1mWrGO0AZQ/AMR6oEN7c0i2mOQbkVz7+l2iw4=
+github.com/ussmith/alexa-skills-kit-golang v0.0.0-20190626201255-fae130b73e4c/go.mod h1:Km+EAsnP41UBn+7uIsRuUWXjhFMGKjeb728cC+KPaz8=
 gopkg.in/urfave/cli.v1 v1.20.0/go.mod h1:vuBzUtMdQeixQj8LVd+/98pzhxNGQoyuPBlsXHOQNO0=
