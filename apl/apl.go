@@ -2,8 +2,8 @@ package apl
 
 //Layout ..
 type Layout struct {
-	Description string          `json:"description"`
-	Parameters  []APLParameters `json:"parameters"`
+	Description string      `json:"description"`
+	Parameters  []Parameter `json:"parameters"`
 }
 
 //Parameter ..
@@ -11,8 +11,36 @@ type Parameter struct {
 	Default     interface{} `json:"default,omitempty"`
 	Description string      `json:"description,omitempty"`
 	Name        string      `json:"name"`
-	Type        string      `json:"type,omitempty"`
+	Type        Type        `json:"type,omitempty"`
 }
+
+//Type is a string that defines the type of the value expected in a parameter
+type Type string
+
+const (
+	//AnyType type
+	AnyType Type = "any"
+	//ArrayType ..
+	ArrayType Type = "array"
+	//BooleanType ..
+	BooleanType Type = "boolean"
+	//ColorType ..
+	ColorType Type = "color"
+	//ComponentType ..
+	ComponentType Type = "component"
+	//DimensionType ..
+	DimensionType Type = "dimension"
+	//IntegerType ..
+	IntegerType Type = "integer"
+	//MapType ..
+	MapType Type = "map"
+	//NumberType ..
+	NumberType Type = "number"
+	//ObjectType ..
+	ObjectType Type = "object"
+	//StringType ..
+	StringType Type = "string"
+)
 
 //BindType ..
 type BindType string
@@ -30,45 +58,32 @@ type Entity interface{}
 //Dimension ..
 type Dimension string
 
-//Style ..
-type Style string
-
 //Property ..
 type Property struct {
-	Bindings           []APLBinding `json:"bind,omitempty"`
-	Entities           []APLEntity  `json:"entity,omitempty"`
-	Height             Dimension    `json:"height,omitempty"`
-	ID                 string       `json:"id,omitemtpy"`
-	InheritParentState bool         `json:"inheritParentState,omitempty"`
-	MaxHeight          Dimension    `json:"maxHeight,omitempty"`
-	MaxWidth           Dimension    `json:"maxWidth,omitempty"`
-	MinHeight          Dimension    `json:"minHeight,omitempty"`
-	MinWidth           Dimension    `json:"minWidth,omitempty"`
-	PaddingBotton      Dimension    `json:"paddingBotton,omitemtpy"`
-	PaddingLeft        Dimension    `json:"paddingLeft,omitemtpy"`
-	PaddingRight       Dimension    `json:"paddingRight,omitemtpy"`
-	PaddingTop         Dimension    `json:"paddingTop,omitemtpy"`
-	Style              Style        `json:"style,omitempty"`
-	Type               string       `json:"type"`
-	When               bool         `json:"when,omitempty"`
-	Width              Dimension    `json:"width,omitempty"`
-}
-
-//Settings ..
-type Settings struct {
-	IdleTimeout int `json:"idleTimeout,omitempty"`
+	Bindings           []Binding `json:"bind,omitempty"`
+	Entities           []Entity  `json:"entity,omitempty"`
+	Height             Dimension `json:"height,omitempty"`
+	ID                 string    `json:"id,omitemtpy"`
+	InheritParentState bool      `json:"inheritParentState,omitempty"`
+	MaxHeight          Dimension `json:"maxHeight,omitempty"`
+	MaxWidth           Dimension `json:"maxWidth,omitempty"`
+	MinHeight          Dimension `json:"minHeight,omitempty"`
+	MinWidth           Dimension `json:"minWidth,omitempty"`
+	PaddingBotton      Dimension `json:"paddingBotton,omitemtpy"`
+	PaddingLeft        Dimension `json:"paddingLeft,omitemtpy"`
+	PaddingRight       Dimension `json:"paddingRight,omitemtpy"`
+	PaddingTop         Dimension `json:"paddingTop,omitemtpy"`
+	Style              Style     `json:"style,omitempty"`
+	Type               string    `json:"type"`
+	When               bool      `json:"when,omitempty"`
+	Width              Dimension `json:"width,omitempty"`
 }
 
 //Import ..
 type Import struct {
 	Name    string `json:"name"`
 	Version string `json:"version"`
-}
-
-//ColorVals ..
-type ColorVals struct {
-	ColorTextPrimary string `json:"colorTextPrimary,omitempty"`
-	//TODO .. What is missing?
+	Source  string `json:"source,omitempty"`
 }
 
 //DimensionVals ..
@@ -90,66 +105,19 @@ type DimensionVals struct {
 
 //Resource ..
 type Resource struct {
-	Description string        `json:"description,omitempty"`
-	Colors      ColorVals     `json:"colors,omitempty"`
-	When        string        `json:"when,omitempty"`
-	Dimensions  DimensionVals `json:"dimensions,omitempty"`
+	Boolean     map[string]bool   `json:"boolean,omitempty"`
+	Colors      map[string]string `json:"colors,omitempty"`
+	Description string            `json:"description,omitempty"`
+	Dimensions  map[string]string `json:"dimensions,omitempty"`
+	Strings     map[string]string `json:"string,omitempty"`
+	When        bool              `json:"when,omitempty"`
 }
 
-//TextStyleValue ..
-type TextStyleValue struct {
-	Color      string `json:"color,omitempty"`
-	FontWeight string `json:"fontWeight,omitempty"`
-	//TODO - What's missing
-}
-
-//TextStyle ..
-type TextStyle struct {
-	Description string           `json:"description"`
-	Values      []TextStyleValue `json:"values"`
-}
-
-//MixinValues ..
-type MixinValues struct {
-	FontWeight string `json:"fontWeight"`
-	//TODO what's missing
-}
-
-//Mixin ..
-type Mixin struct {
-	Values MixinValues `json:"values,omitemtpy"`
-}
-
-//TextStyle ..
-type TextStyle struct {
-	Extends []string `json:"extend"`
-}
-
-//TextHint ..
-type TextHint struct {
-	FontFamily string `json:fontFamily,omitempty"`
-	FontStyle  string `json:fontStyle,omitempty"`
-	FontSize   string `json:fontSize,omitempty"`
-	Color      string `json:color,omitempty"`
-}
-
-//TextStyleHint ..
-type TextStyleHint struct {
-	TextHint TextHint `json:"values"`
-}
-
-//Styles ..
-type Styles struct {
-	TextStyleBase          TextStyle     `json:"TextStyleBase,omitempty"`
-	TextStyleBase0         TextStyle     `json:"TextStyleBase0,omitempty"`
-	TextStyleBase1         TextStyle     `json:"TextStyleBase1,omitempty"`
-	MixinBody              Mixin         `json:"MixinBody,omitempty"`
-	MixinPrimary           Mixin         `json:"MixinPrimary,omitempty"`
-	MixinSecondary         Mixin         `json:"MixinPrimary,omitempty"`
-	TextStylePrimary       TextStyle     `json:"textStylePrimary,omitempty"`
-	TextStyleSecondary     TextStyle     `json:"textStyleSecondary,omitempty"`
-	TextStyleBody          TextStyle     `json:"textStyleBody,omitempty"`
-	TextStyleSecondaryHint TextStyleHint `json:"textStyleSecondaryHint"`
+//Style ..
+type Style struct {
+	Description  string              `json:"description,omitempty"`
+	ParentStyles []string            `json:"extends,omitempty"`
+	Values       []map[string]string `json:"values,omitempty"`
 }
 
 //MountCommand ..
@@ -165,16 +133,60 @@ type OnMount struct {
 	Finally  string         `json:"finally,omitemtpy"`
 }
 
+//Graphic ..
+type Graphic struct {
+	Type       string              `json:"type"`
+	Version    string              `json:"version"`
+	Parameters []map[string]string `json:"parameters"`
+	Width      int                 `json:"width"`
+	Height     int                 `json:"height"`
+	Items      map[string]string   `json:"items"`
+}
+
+//Graphics ..
+//type Graphics struct {
+//	ParmeterizedCircle ParameterizedCircle `json:"parameterizedCircle,omitempty"`
+//	AmazonPlayTrailer  AmazonPlayTraile    `json:"amazonPlayTrailer,omitempty"`
+//}
+
+//CommandValue ..
+type CommandValue struct {
+	Property string `json:"property"`
+	From     int    `json:"from"`
+	To       int    `json:"to"`
+}
+
+//Command ..
+type Command struct {
+	Type     string         `json:"type"`
+	Easing   string         `json:"easing"`
+	Duration int            `json:"duration"`
+	Values   []CommandValue `json:"values"`
+}
+
 //Document ..
 type Document struct {
-	Type        string            `json:"type"`
-	Version     string            `json:"version"`
-	Settings    Settings          `json:"settings"`
-	Theme       string            `json:"theme"`
-	Description string            `json:"description,omitempty"`
-	Imports     []Import          `json:"import,omitempty"`
-	Resources   []Resource        `json:"resources"`
-	Styles      Styles            `json:"styles"`
-	OnMount     []MountInsruction `json:"onMount"`
-	Layouts     map[string]Layout `json:"layouts"`
+	Type         string                 `json:"type"`
+	Version      string                 `json:"version"`
+	Imports      []Import               `json:"import,omitempty"`
+	Settings     map[string]interface{} `json:"settings"`
+	Theme        string                 `json:"theme"`
+	Description  string                 `json:"description,omitempty"`
+	Resource     Resource               `json:"resources"`
+	Styles       map[string]Style       `json:"styles"`
+	OnMount      []MountInsruction      `json:"onMount"`
+	Graphics     map[string]Graphic     `json:"graphics"`
+	Commands     map[string]Command     `json:"commands"`
+	Layouts      map[string]Layout      `json:"layouts"`
+	MainTemplate Layout                 `json:"mainTemplate"`
+}
+
+//New gives provdes an empty document with the
+//correct type and version configured
+func New() Document {
+	var d Document
+	d.Type = "APL"
+	d.Version = "1.1"
+
+	return d
 }
