@@ -133,52 +133,24 @@ type OnMount struct {
 	Finally  string         `json:"finally,omitemtpy"`
 }
 
-//Graphic ..
-type Graphic struct {
-	Type       string              `json:"type"`
-	Version    string              `json:"version"`
-	Parameters []map[string]string `json:"parameters"`
-	Width      int                 `json:"width"`
-	Height     int                 `json:"height"`
-	Items      map[string]string   `json:"items"`
-}
-
-//Graphics ..
-//type Graphics struct {
-//	ParmeterizedCircle ParameterizedCircle `json:"parameterizedCircle,omitempty"`
-//	AmazonPlayTrailer  AmazonPlayTraile    `json:"amazonPlayTrailer,omitempty"`
-//}
-
-//CommandValue ..
-type CommandValue struct {
-	Property string `json:"property"`
-	From     int    `json:"from"`
-	To       int    `json:"to"`
-}
-
-//Command ..
-type Command struct {
-	Type     string         `json:"type"`
-	Easing   string         `json:"easing"`
-	Duration int            `json:"duration"`
-	Values   []CommandValue `json:"values"`
-}
-
 //Document ..
 type Document struct {
-	Type         string                 `json:"type"`
-	Version      string                 `json:"version"`
-	Imports      []Import               `json:"import,omitempty"`
-	Settings     map[string]interface{} `json:"settings"`
-	Theme        string                 `json:"theme"`
-	Description  string                 `json:"description,omitempty"`
-	Resource     Resource               `json:"resources"`
-	Styles       map[string]Style       `json:"styles"`
-	OnMount      []MountInsruction      `json:"onMount"`
-	Graphics     map[string]Graphic     `json:"graphics"`
-	Commands     map[string]Command     `json:"commands"`
-	Layouts      map[string]Layout      `json:"layouts"`
-	MainTemplate Layout                 `json:"mainTemplate"`
+	Commands    map[string]interface{}        `json:"commands"`
+	Description string                        `json:"description,omitempty"`
+	Graphics    map[string]AlexaVectorGraphic `json:"graphics"`
+	Imports     []Import                      `json:"import,omitempty"`
+	//start here
+	Layouts      map[string]Layout `json:"layouts"`
+	MainTemplate Layout            `json:"mainTemplate"`
+
+	//Slice of Commands
+	OnMount  []interface{}          `json:"onMount"`
+	Resource Resource               `json:"resources"`
+	Settings map[string]interface{} `json:"settings"`
+	Styles   map[string]Style       `json:"styles"`
+	Theme    string                 `json:"theme"`
+	Type     string                 `json:"type"`
+	Version  string                 `json:"version"`
 }
 
 //New gives provdes an empty document with the

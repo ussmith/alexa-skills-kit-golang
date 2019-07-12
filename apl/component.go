@@ -15,14 +15,14 @@ const (
 
 // Transform ..
 type Transform struct {
-	Rotate     *float32 `json:"rotate"`
-	Scale      *float32 `json:"scale"`
-	ScaleX     *float32 `json:"scaleX"`
-	ScaleY     *float32 `json:"scaleY"`
-	SkewX      *float32 `json:"skewX"`
-	SkewY      *float32 `json:"skewY"`
-	TranslateX *float32 `json:"translateX"`
-	TranslateY *float32 `json:"translateY"`
+	Rotate     *float32 `json:"rotate,omitempty"`
+	Scale      *float32 `json:"scale,omitempty"`
+	ScaleX     *float32 `json:"scaleX,omitempty"`
+	ScaleY     *float32 `json:"scaleY,omitempty"`
+	SkewX      *float32 `json:"skewX,omitempty"`
+	SkewY      *float32 `json:"skewY,omitempty"`
+	TranslateX *float32 `json:"translateX,omitempty"`
+	TranslateY *float32 `json:"translateY,omitempty"`
 }
 
 //Component ..
@@ -33,26 +33,27 @@ type Component struct {
 	Checked            bool          `json:"checked,omitempty"`
 	Disabled           bool          `json:"disabled,omitempty"`
 	Display            DisplayState  `json:"display,omitempty"`
-	Entity             []interface{} `json:entity,omitempty"`
+	Entity             []interface{} `json:"entity,omitempty"`
 	Height             string        `json:"height,omitempty"`
 	ID                 string        `json:"id,omitempty"`
-	InheritParentState bool          `json:"inheritParentState,omitemtpy"`
+	InheritParentState bool          `json:"inheritParentState,omitempty"`
 	MaxHeight          string        `json:"maxHeight,omitEmpty"`
 	MinHeight          string        `json:"minHeight,omitEmpty"`
 	MaxWidth           string        `json:"maxWidth,omitEmpty"`
 	MinWidth           string        `json:"minWidth,omitEmpty"`
-	OnMount            []Command     `json:"onMount,omitemtpty"`
-	Opacity            float32       `json:"opacity,omitemtpty"`
-	PaddingBottom      string        `json:"paddingBottom,omitemtpty"`
-	PaddingLeft        string        `json:"paddingLeft,omitemtpty"`
-	PaddingRight       string        `json:"paddingRight,omitemtpty"`
-	PaddingTop         string        `json:"paddingTop,omitemtpty"`
-	Speech             interface{}   `json:"opaque,omitempty"`
-	Style              Style         `json:"style,omitempty"`
-	Transform          []Transform   `json:"transform,omitempty"`
-	Type               string        `json:"type"`
-	When               *bool         `json:"when,omitemtpy"`
-	Width              string        `json:"width,omitemtpy"`
+	//Slice of command
+	OnMount       []interface{} `json:"onMount,omitempty"`
+	Opacity       float32       `json:"opacity,omitempty"`
+	PaddingBottom string        `json:"paddingBottom,omitempty"`
+	PaddingLeft   string        `json:"paddingLeft,omitempty"`
+	PaddingRight  string        `json:"paddingRight,omitempty"`
+	PaddingTop    string        `json:"paddingTop,omitempty"`
+	Speech        interface{}   `json:"opaque,omitempty"`
+	Style         Style         `json:"style,omitempty"`
+	Transform     []Transform   `json:"transform,omitempty"`
+	Type          string        `json:"type"`
+	When          string        `json:"when,omitempty"`
+	Width         string        `json:"width,omitempty"`
 }
 
 // AlignType ..
@@ -166,6 +167,7 @@ const (
 
 // Image ..
 type Image struct {
+	Component
 	Alignment    Align  `json:"align"`
 	BorderRadius string `json:"borderRadius"`
 	//Filter []Filter `json:"filter"`
@@ -191,19 +193,22 @@ const (
 
 //Pager ..
 type Pager struct {
-	Data         interface{} `json:"data"`
-	FirstItem    []Component `json:"firstItem"`
-	InitialPage  int         `json:"initialPage"`
-	Item         []Component `json:"item"`
-	LastItem     []Component `json:"item"`
-	Navigation   Navigation  `json:"navigation"`
-	OnPageChange []Command   `json:"onPageChange"`
+	Component
+	Data        interface{} `json:"data"`
+	FirstItem   []Component `json:"firstItem"`
+	InitialPage int         `json:"initialPage"`
+	Item        []Component `json:"item"`
+	LastItem    []Component `json:"lastItem"`
+	Navigation  Navigation  `json:"navigation"`
+	//Slice of command
+	OnPageChange []interface{} `json:"onPageChange"`
 }
 
 //ScrollView ..
 type ScrollView struct {
-	Item     []Component `json:"component"`
-	OnScroll []Command   `json:"onScroll"`
+	Item []Component `json:"component"`
+	//Slice of command
+	OnScroll []interface{} `json:"onScroll"`
 }
 
 // ScrollDirection ..
@@ -218,13 +223,15 @@ const (
 
 //Sequence uses a data set to inflate a repeating set of components and display them in a long scrolling list.
 type Sequence struct {
+	Component
 	Data            []interface{}   `json:"data"`
 	ScrollDirection ScrollDirection `json:"scrollDirection"`
 	FirstItem       []Component     `json:"firstItem"`
 	Item            []Component     `json:"item"`
-	LastItem        []Component     `json:"item"`
+	LastItem        []Component     `json:"lastItem"`
 	Numbered        bool            `json:"numbered"`
-	OnScroll        []Command       `json:"onScroll"`
+	//Slice of command
+	OnScroll []interface{} `json:"onScroll"`
 }
 
 //FontStyle to display
@@ -289,6 +296,7 @@ const (
 
 //Text ..
 type Text struct {
+	Component
 	Color             string            `json:"color"`
 	FontFamily        string            `json:"fontFamily"`
 	FontSize          string            `json:"fontSize"`
@@ -300,4 +308,101 @@ type Text struct {
 	Text              string            `json:"text"`
 	TextAlign         TextAlign         `json:"textAlign"`
 	TextAlignVertical TextAlignVertical `json:"textAlignVertical"`
+}
+
+// TouchWrapper ..
+type TouchWrapper struct {
+	Component
+	Item []Component `json:"item"`
+	//Slice of command
+	OnPress []interface{} `json:"onPress"`
+}
+
+// VectorGraphicAlign ..
+type VectorGraphicAlign string
+
+// VectorGraphicScale ..
+type VectorGraphicScale string
+
+const (
+	//VGAlignBotton ..
+	VGAlignBotton VectorGraphicAlign = "bottom"
+	//VGAlignBottonLeft ..
+	VGAlignBottonLeft VectorGraphicAlign = "bottom-left"
+	//VGAlignBottonRight ..
+	VGAlignBottonRight VectorGraphicAlign = "bottom-right"
+	//VGAlignCenter ..
+	VGAlignCenter VectorGraphicAlign = "center"
+	//VGAlignLeft ..
+	VGAlignLeft VectorGraphicAlign = "left"
+	//VGAlignRight ..
+	VGAlignRight VectorGraphicAlign = "right"
+	//VGAlignTop ..
+	VGAlignTop VectorGraphicAlign = "top"
+	//VGAlignTopLeft ..
+	VGAlignTopLeft VectorGraphicAlign = "top-left"
+	//VGAlignTopRight ..
+	VGAlignTopRight VectorGraphicAlign = "top-right"
+
+	//VGScaleNone ..
+	VGScaleNone VectorGraphicScale = "none"
+	//VGScaleFill ..
+	VGScaleFill VectorGraphicScale = "fill"
+	//VGScaleBestFill ..
+	VGScaleBestFill VectorGraphicScale = "best-fill"
+	//VGScaleBestFit ..
+	VGScaleBestFit VectorGraphicScale = "best-fit"
+)
+
+// VectorGraphic ..
+type VectorGraphic struct {
+	Alignment VectorGraphicAlign `json:"align"`
+	Scale     VectorGraphicScale `json:"scale"`
+	Source    string             `json:"source"`
+}
+
+// AudioTrackType ..
+type AudioTrackType string
+
+// AudioScale ..
+type AudioScale string
+
+const (
+	//ATForeground ..
+	ATForeground AudioTrackType = "foreground"
+	//ATBackground ..
+	ATBackground AudioTrackType = "background"
+	//ATNone ..
+	ATNone AudioTrackType = "none"
+
+	//ATScaleBestFill ..
+	ATScaleBestFill AudioScale = "best-fill"
+	//ATScaleBestFit ..
+	ATScaleBestFit AudioScale = "best-fit"
+)
+
+// MediaSource ..
+type MediaSource struct {
+	Description string `json:"description"`
+	Offset      int    `json:"offset"`
+	URL         string `json:"url"`
+	RepeatCount int8   `json:"repeatCount"`
+}
+
+// Video ..
+type Video struct {
+	AudioTrack AudioTrackType `json:"audioTrack"`
+	Autoplay   bool           `json:"autoplay"`
+	//Slice of command
+	OnEnd []interface{} `json:"onEnd"`
+	//Slice of command
+	OnPause []interface{} `json:"onPause"`
+	//Slice of command
+	OnPlay []interface{} `json:"onPlay"`
+	//Slice of command
+	OnTimeUpdate []interface{} `json:"onTimeUpdate"`
+	//Slice of command
+	OnTrackUpdate []interface{} `json:"onTrackUpdate"`
+	Scale         AudioScale    `json:"scale"`
+	Source        []MediaSource `json:"source"`
 }
