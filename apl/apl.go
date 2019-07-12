@@ -4,6 +4,7 @@ package apl
 type Layout struct {
 	Description string      `json:"description"`
 	Parameters  []Parameter `json:"parameters"`
+	Item        []Component `json:"item"`
 }
 
 //Parameter ..
@@ -133,24 +134,28 @@ type OnMount struct {
 	Finally  string         `json:"finally,omitemtpy"`
 }
 
+// Setting holds a map of key-value pairs that define document-wide properties.
+type Setting struct {
+	IdleTimeout int `json:"idleTimeout"`
+}
+
 //Document ..
 type Document struct {
-	Commands    map[string]interface{}        `json:"commands"`
-	Description string                        `json:"description,omitempty"`
-	Graphics    map[string]AlexaVectorGraphic `json:"graphics"`
-	Imports     []Import                      `json:"import,omitempty"`
-	//start here
-	Layouts      map[string]Layout `json:"layouts"`
-	MainTemplate Layout            `json:"mainTemplate"`
+	Commands     map[string]interface{}        `json:"commands"`
+	Description  string                        `json:"description,omitempty"`
+	Graphics     map[string]AlexaVectorGraphic `json:"graphics"`
+	Imports      []Import                      `json:"import,omitempty"`
+	Layouts      map[string]Layout             `json:"layouts"`
+	MainTemplate Layout                        `json:"mainTemplate"`
 
 	//Slice of Commands
-	OnMount  []interface{}          `json:"onMount"`
-	Resource Resource               `json:"resources"`
-	Settings map[string]interface{} `json:"settings"`
-	Styles   map[string]Style       `json:"styles"`
-	Theme    string                 `json:"theme"`
-	Type     string                 `json:"type"`
-	Version  string                 `json:"version"`
+	OnMount  []interface{}      `json:"onMount"`
+	Resource Resource           `json:"resources"`
+	Settings map[string]Setting `json:"settings"`
+	Styles   map[string]Style   `json:"styles"`
+	Theme    string             `json:"theme"`
+	Type     string             `json:"type"`
+	Version  string             `json:"version"`
 }
 
 //New gives provdes an empty document with the
