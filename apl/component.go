@@ -49,11 +49,12 @@ type Component struct {
 	PaddingRight  string        `json:"paddingRight,omitempty"`
 	PaddingTop    string        `json:"paddingTop,omitempty"`
 	Speech        interface{}   `json:"opaque,omitempty"`
-	Style         Style         `json:"style,omitempty"`
-	Transform     []Transform   `json:"transform,omitempty"`
-	Type          string        `json:"type"`
-	When          string        `json:"when,omitempty"`
-	Width         string        `json:"width,omitempty"`
+	//Style         Style         `json:"style,omitempty"`
+	Style     string      `json:"style,omitempty"`
+	Transform []Transform `json:"transform,omitempty"`
+	Type      string      `json:"type"`
+	When      string      `json:"when,omitempty"`
+	Width     string      `json:"width,omitempty"`
 }
 
 // AlignType ..
@@ -101,10 +102,68 @@ type Container struct {
 	Data           []interface{}  `json:"data"`
 	Direction      Direction      `json:"direction"`
 	FirstItem      []Component    `json:"component"`
-	Items          []Component    `json:"item"`
+	Items          []interface{}  `json:"item"`
 	JustifyContent JustifyContent `json:"justifyContent"`
 	LastItem       []Component    `json:"lastItem"`
 	Numbered       bool           `json:"numbered"`
+}
+
+//ContainerAlignSelf ..
+type ContainerAlignSelf string
+
+// ContainerNumbering ..
+type ContainerNumbering string
+
+// ContainerPosition ..
+type ContainerPosition string
+
+const (
+	//ContainerAlignSelfAuto ..
+	ContainerAlignSelfAuto ContainerAlignSelf = "auto"
+
+	//ContainerAlignSelfStart ..
+	ContainerAlignSelfStart ContainerAlignSelf = "start"
+
+	//ContainerAlignSelfEnd ..
+	ContainerAlignSelfEnd ContainerAlignSelf = "end"
+
+	//ContainerAlignSelfCenter ..
+	ContainerAlignSelfCenter ContainerAlignSelf = "center"
+
+	//ContainerAlignSelfBaseline ..
+	ContainerAlignSelfBaseline ContainerAlignSelf = "baseline"
+
+	//ContainerAlignSelfStretch ..
+	ContainerAlignSelfStretch ContainerAlignSelf = "stretch"
+
+	//ContainerNumberingNormal ..
+	ContainerNumberingNormal ContainerNumbering = "normal"
+
+	//ContainerNumberingSkip ..
+	ContainerNumberingSkip ContainerNumbering = "skip"
+
+	//ContainerNumberingReset ..
+	ContainerNumberingReset ContainerNumbering = "reset"
+
+	//ContinerPositionRelative ..
+	ContinerPositionRelative ContainerPosition = "relative"
+
+	//ContinerPositionAbsolute ..
+	ContinerPositionAbsolute ContainerPosition = "absolute"
+)
+
+//ContainerChild has additional properties that control how that child is positioned in the parent container
+type ContainerChild struct {
+	Container
+	AlignSelf ContainerAlignSelf `json:"alignSelf"`
+	Bottom    string             `json:"bottom"`
+	Grow      int                `json:"grow"`
+	Numbering ContainerNumbering `json:"numbering"`
+	Position  ContainerPosition  `json:"position"`
+	Right     string             `json:"right"`
+	Shrink    int                `json:"shrink"`
+	Spacing   string             `json:"spacing"`
+	Top       string             `json:"top"`
 }
 
 //Frame ..
@@ -173,6 +232,7 @@ type Image struct {
 	//Filter []Filter `json:"filter"`
 	OverlayColor    string `json:"overlayColor"`
 	OverlayGradient string `json:"overlayGradient"`
+	Position        string `json:"position"`
 	Scale           Scale  `json:"scale"`
 	Source          string `json:"source"`
 }
@@ -305,6 +365,7 @@ type Text struct {
 	LetterSpacing     string            `json:"letterSpacing"`
 	LineHeight        string            `json:"lineHeight"`
 	MaxLines          int               `json:"maxLines"`
+	Spacing           string            `json:"spacing"`
 	Text              string            `json:"text"`
 	TextAlign         TextAlign         `json:"textAlign"`
 	TextAlignVertical TextAlignVertical `json:"textAlignVertical"`

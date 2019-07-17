@@ -1,12 +1,19 @@
 package apl
 
+//CustomCommand ..
+type CustomCommand struct {
+	Parameters  []string      `json:"parameters,omitempty"`
+	Commands    []interface{} `json:"command"`
+	Description string        `json:"description,omitempty"`
+}
+
 //CommandBase holds common command properties
 type CommandBase struct {
 	Type        string `json:"type"`
 	Description string `json:"description,omitempty"`
 	Delay       int    `json:"delay,omitempty"`
-	ScreenLock  *bool  `json:"screenLock,omitEmpty"`
-	When        *bool  `json:"when,omitempty"`
+	ScreenLock  bool   `json:"screenLock,omitEmpty"`
+	When        bool   `json:"when,omitempty"`
 }
 
 // Easing ..
@@ -35,26 +42,43 @@ const (
 
 // AnimationProperty ..
 type AnimationProperty struct {
-	CommandBase
 	//From is the starting value of the propery
-	From []map[string]int `json:"From"`
+	//It is an interface because on the wire it can either be number
+	//or a parameter value that will resolve to a number i.e. "${distance}"
+	From []map[string]interface{} `json:"from"`
 
 	//Property is the name of the property to animate
 	Property string `json:"property"`
 
 	//To is the ending value of the property
-	To []map[string]int `json:"to"`
+	//It is an interface because on the wire it can either be number
+	//or a formula that will resolve to a number
+	To []map[string]interface{} `json:"to"`
 }
 
 //AnimateItemCommand Runs a fixed-duration animation sequence on one or more properties of a single component
 type AnimateItemCommand struct {
 	CommandBase
-	ComponentID string              `json:"componentId"`
-	Duration    int                 `json:"duration"`
-	Easing      Easing              `json:"easing"`
-	RepeatCount int                 `json:"repeatCount"`
-	RepeatMode  RepeatMode          `json:"repeatMode"`
-	Value       []AnimationProperty `json:"animationProperty"`
+	ComponentID string                   `json:"componentId,omitempty"`
+	Duration    int                      `json:"duration"`
+	Easing      Easing                   `json:"easing,omitempty"`
+	RepeatCount int                      `json:"repeatCount,omitempty"`
+	RepeatMode  RepeatMode               `json:"repeatMode,omitempty"`
+	Values      []map[string]interface{} `json:"value,omitempty"`
+	//Values      []AnimationProperty `json:"value,omitempty"`
+}
+
+//NewAnimateItemCommand generates an animate item with the defaults set for non-required fields
+func NewAnimateItemCommand() AnimateItemCommand {
+	var ai AnimateItemCommand
+	ai.CommandBase = defaultCommandBase()
+	ai.ComponentID = "SELF"
+	ai.Easing = "linear"
+	ai.RepeatCount = 0
+	ai.RepeatMode = "restart"
+
+	return ai
+
 }
 
 // AutoPage automatically progresses through a seris of pages displayed in a Pager comonent
@@ -259,4 +283,14 @@ type ControlMediaCommand struct {
 	Command     MediaCommand `json:"command"`
 	ComponentID string       `json:"componentId"`
 	Value       int          `json:"value"`
+}
+
+func defaultCommandBase() CommandBase {
+	var cb CommandBase
+
+	cb.Delay = 0
+	cb.When = true
+	cb.ScreenLock = false
+
+	return cb
 }
