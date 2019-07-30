@@ -206,6 +206,14 @@ type DialogDirective struct {
 	UpdatedIntent *Intent `json:"updatedIntent,omitempty"`
 }
 
+// RenderDocumentDirective contain directives for use with Amazon APL documents
+type RenderDocumentDirective struct {
+	Type        string    `json:"type"`
+	Token       string    `json:"token"`
+	Document    *struct{} `json:"document"`
+	DataSources *struct{} `json:"datasources,omitempty"`
+}
+
 // SupportsVideo returns true if this skill was initiated from
 // a device that supports video, false otherwise
 func SupportsVideo(ctx *Context) bool {
@@ -371,6 +379,17 @@ func (r *Response) AddDialogDirective(dialogType, slotToElicit, slotToConfirm st
 		SlotToElicit:  slotToElicit,
 		SlotToConfirm: slotToConfirm,
 		UpdatedIntent: intent,
+	}
+	r.Directives = append(r.Directives, d)
+}
+
+// AddRenderDocumentDirective adds a RenderDocument directive to the Response.
+func (r *Response) AddRenderDocumentDirective(token string, document, datasources *struct{}) {
+	d := RenderDocumentDirective{
+		Type:        "Alexa.Presentation.APL.RenderDocument",
+		Token:       token,
+		Document:    document,
+		DataSources: datasources,
 	}
 	r.Directives = append(r.Directives, d)
 }
