@@ -188,14 +188,38 @@ type AudioPlayerDirective struct {
 
 // AudioItem contains an audio Stream definition for playback.
 type AudioItem struct {
-	Stream Stream `json:"stream,omitempty"`
+	Stream   Stream        `json:"stream,omitempty"`
+	Metadata AudioMetadata `json:"metadata,omitempty"`
 }
 
 // Stream contains instructions on playing an audio stream.
 type Stream struct {
-	Token                string `json:"token"`
-	URL                  string `json:"url"`
-	OffsetInMilliseconds int    `json:"offsetInMilliseconds"`
+	Token                 string `json:"token"`
+	URL                   string `json:"url"`
+	ExpectedPreviousToken string `json:"expectedPreviousToken,omitempty"`
+	OffsetInMilliseconds  int    `json:"offsetInMilliseconds"`
+}
+
+// AudioMetadata contains instructions for providing audio metadata
+type AudioMetadata struct {
+	Title           string     `json:"title"`
+	Subtitle        string     `json:"subtitle"`
+	Art             AudioImage `json:"art"`
+	BackgroundImage AudioImage `json:"backgroundImage"`
+}
+
+// AudioImage contains the data for images used within Audio Directives
+type AudioImage struct {
+	ContentDescription string             `json:"contentDescription,omitempty"`
+	Sources            []AudioImageSource `json:"sources"`
+}
+
+// AudioImageSource contains the data for an image
+type AudioImageSource struct {
+	URL          string `json:"url"`
+	Size         string `json:"size"`
+	WidthPixels  int    `json:"widthPixels"`
+	HeightPixels int    `json:"heightPixels"`
 }
 
 // DialogDirective contains directives for use in Dialog prompts.
