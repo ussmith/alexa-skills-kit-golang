@@ -8,6 +8,8 @@ import (
 	"math"
 	"strconv"
 	"time"
+
+	"github.com/ussmith/alexa-skills-kit-golang/apl"
 )
 
 const sdkVersion = "1.0"
@@ -179,17 +181,50 @@ type Reprompt struct {
 	OutputSpeech *OutputSpeech `json:"outputSpeech,omitempty"`
 }
 
-// AudioPlayerDirective contains device level instructions on how to handle the response.
-type AudioPlayerDirective struct {
-	Type         string     `json:"type"`
-	PlayBehavior string     `json:"playBehavior,omitempty"`
-	AudioItem    *AudioItem `json:"audioItem,omitempty"`
+// PlayBehavior Describes playback behavior
+type PlayBehavior string
+
+const (
+	// ReplaceAll ...
+	ReplaceAll PlayBehavior = "REPLACE_ALL"
+	// Enqueue ...
+	Enqueue PlayBehavior = "ENQUEUE"
+	// ReplaceEnqueued ...
+	ReplaceEnqueued PlayBehavior = "REPLACE_ENQUEUED"
+)
+
+// ClearBehavior Describes the clear behavior
+type ClearBehavior string
+
+const (
+	// ClearEnqueued ...
+	ClearEnqueued ClearBehavior = "CLEAR_ENQUEUED"
+	// ClearAll ...
+	ClearAll ClearBehavior = "CLEAR_ALL"
+)
+
+// PlayAudioDirective Sends Alexa a command to stream the audio file identified by the specified audioItem.
+type PlayAudioDirective struct {
+	Type         string       `json:"type"`
+	PlayBehavior PlayBehavior `json:"playBehavior"`
+	AudioItem    AudioItem    `json:"audioItem"`
+}
+
+// StopAudioDirective Stops the current audio playback.
+type StopAudioDirective struct {
+	Type string `json:"type"`
+}
+
+// ClearQueueDirective Clears the audio playback queue.
+type ClearQueueDirective struct {
+	Type          string        `json:"type"`
+	ClearBehavior ClearBehavior `json:"clearBehavior"`
 }
 
 // AudioItem contains an audio Stream definition for playback.
 type AudioItem struct {
-	Stream   Stream        `json:"stream,omitempty"`
-	Metadata AudioMetadata `json:"metadata,omitempty"`
+	Stream   Stream         `json:"stream"`
+	Metadata *AudioMetadata `json:"metadata,omitempty"`
 }
 
 // Stream contains instructions on playing an audio stream.
@@ -202,10 +237,10 @@ type Stream struct {
 
 // AudioMetadata contains instructions for providing audio metadata
 type AudioMetadata struct {
-	Title           string     `json:"title"`
-	Subtitle        string     `json:"subtitle"`
-	Art             AudioImage `json:"art"`
-	BackgroundImage AudioImage `json:"backgroundImage"`
+	Title           string      `json:"title,omitempty"`
+	Subtitle        string      `json:"subtitle,omitempty"`
+	Art             *AudioImage `json:"art,omitempty"`
+	BackgroundImage *AudioImage `json:"backgroundImage,omitempty"`
 }
 
 // AudioImage contains the data for images used within Audio Directives
@@ -232,10 +267,10 @@ type DialogDirective struct {
 
 // RenderDocumentDirective contain directives for use with Amazon APL documents
 type RenderDocumentDirective struct {
-	Type        string    `json:"type"`
-	Token       string    `json:"token"`
-	Document    *struct{} `json:"document"`
-	DataSources *struct{} `json:"datasources,omitempty"`
+	Type        string       `json:"type"`
+	Token       string       `json:"token"`
+	Document    apl.Document `json:"document"`
+	DataSources *struct{}    `json:"datasources,omitempty"`
 }
 
 // SupportsVideo returns true if this skill was initiated from
@@ -373,12 +408,12 @@ func (r *Response) SetRepromptSSML(ssml string) {
 	r.Reprompt.OutputSpeech = &OutputSpeech{Type: "SSML", SSML: ssml}
 }
 
-// AddAudioPlayer adds an AudioPlayer directive to the Response.
-func (r *Response) AddAudioPlayer(playerType, playBehavior, streamToken, url string, offsetInMilliseconds int) {
-	d := AudioPlayerDirective{
-		Type:         playerType,
+// AddPlayAudioPlayerDirective adds an AudioPlayer directive to the Response.
+func (r *Response) AddPlayAudioPlayerDirective(playBehavior PlayBehavior, streamToken, url string, offsetInMilliseconds int) {
+	d := PlayAudioDirective{
+		Type:         "AudioPlayer.Play",
 		PlayBehavior: playBehavior,
-		AudioItem: &AudioItem{
+		AudioItem: AudioItem{
 			Stream: Stream{
 				Token:                streamToken,
 				URL:                  url,
@@ -389,9 +424,19 @@ func (r *Response) AddAudioPlayer(playerType, playBehavior, streamToken, url str
 	r.Directives = append(r.Directives, d)
 }
 
-func (r *Response) AddAudioPlayerDirective(playerType string) {
-	d := AudioPlayerDirective{
-		Type: playerType,
+// AddStopAudioPlayerDirective adds an AudioPlayer directive to stop the Audio.
+func (r *Response) AddStopAudioPlayerDirective() {
+	d := StopAudioDirective{
+		Type: "AudioPlayer.Stop",
+	}
+	r.Directives = append(r.Directives, d)
+}
+
+// AddClearQueueAudioPlayerDirective adds an AudioPlayer directive to clear the audio queue.
+func (r *Response) AddClearQueueAudioPlayerDirective(clearBehavior ClearBehavior) {
+	d := ClearQueueDirective{
+		Type:          "AudioPlayer.ClearQueue",
+		ClearBehavior: clearBehavior,
 	}
 	r.Directives = append(r.Directives, d)
 }
@@ -408,7 +453,7 @@ func (r *Response) AddDialogDirective(dialogType, slotToElicit, slotToConfirm st
 }
 
 // AddRenderDocumentDirective adds a RenderDocument directive to the Response.
-func (r *Response) AddRenderDocumentDirective(token string, document, datasources *struct{}) {
+func (r *Response) AddRenderDocumentDirective(token string, document apl.Document, datasources *struct{}) {
 	d := RenderDocumentDirective{
 		Type:        "Alexa.Presentation.APL.RenderDocument",
 		Token:       token,
