@@ -270,7 +270,7 @@ type RenderDocumentDirective struct {
 	Type        string       `json:"type"`
 	Token       string       `json:"token"`
 	Document    apl.Document `json:"document"`
-	DataSources *struct{}    `json:"datasources,omitempty"`
+	DataSources *interface{} `json:"datasources,omitempty"`
 }
 
 // SupportsVideo returns true if this skill was initiated from
