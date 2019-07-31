@@ -193,7 +193,7 @@ func (d *DocumentWrapper) AddStyle(name string, style Style) *DocumentWrapper {
 }
 
 //WithOnMount ..
-func (d *DocumentWrapper) WithOnMount(onMount OnMount) *DocumentWrapper {
+func (d *DocumentWrapper) WithOnMount(onMount *OnMount) *DocumentWrapper {
 	d.OnMount = onMount
 	return d
 }
