@@ -109,7 +109,7 @@ type Document struct {
 	MainTemplate Layout                        `json:"mainTemplate"`
 
 	//Slice of Commands
-	OnMount   OnMount                `json:"onMount,omitempty"`
+	OnMount   *OnMount               `json:"onMount,omitempty"`
 	Resources []Resource             `json:"resources,omitempty"`
 	Settings  map[string]interface{} `json:"settings,omitempty"`
 	Styles    map[string]Style       `json:"styles,omitempty"`
