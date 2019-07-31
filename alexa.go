@@ -8,8 +8,6 @@ import (
 	"math"
 	"strconv"
 	"time"
-
-	"github.com/ussmith/alexa-skills-kit-golang/apl"
 )
 
 const sdkVersion = "1.0"
@@ -269,7 +267,7 @@ type DialogDirective struct {
 type RenderDocumentDirective struct {
 	Type        string       `json:"type"`
 	Token       string       `json:"token"`
-	Document    apl.Document `json:"document"`
+	Document    interface{}  `json:"document"`
 	DataSources *interface{} `json:"datasources,omitempty"`
 }
 
@@ -453,7 +451,7 @@ func (r *Response) AddDialogDirective(dialogType, slotToElicit, slotToConfirm st
 }
 
 // AddRenderDocumentDirective adds a RenderDocument directive to the Response.
-func (r *Response) AddRenderDocumentDirective(token string, document apl.Document, datasources interface{}) {
+func (r *Response) AddRenderDocumentDirective(token string, document, datasources interface{}) {
 	d := RenderDocumentDirective{
 		Type:        "Alexa.Presentation.APL.RenderDocument",
 		Token:       token,
