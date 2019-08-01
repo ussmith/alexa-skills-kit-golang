@@ -306,6 +306,9 @@ func (alexa *Alexa) ProcessRequest(ctx context.Context, requestEnv *RequestEnvel
 
 	request := requestEnv.Request
 	session := requestEnv.Session
+	if session == nil {
+		session = &Session{}
+	}
 	if session.Attributes.String == nil {
 		session.Attributes.String = make(map[string]string)
 	}
