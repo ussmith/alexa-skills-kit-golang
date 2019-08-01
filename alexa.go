@@ -249,10 +249,10 @@ type AudioImage struct {
 
 // AudioImageSource contains the data for an image
 type AudioImageSource struct {
-	URL          string `json:"url"`
-	Size         string `json:"size"`
-	WidthPixels  int    `json:"widthPixels"`
-	HeightPixels int    `json:"heightPixels"`
+	URL          string  `json:"url"`
+	Size         *string `json:"size,omitempty"`
+	WidthPixels  *int    `json:"widthPixels,omitempty"`
+	HeightPixels *int    `json:"heightPixels,omitempty"`
 }
 
 // DialogDirective contains directives for use in Dialog prompts.
