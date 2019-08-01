@@ -235,15 +235,10 @@ type Stream struct {
 
 // AudioMetadata contains instructions for providing audio metadata
 type AudioMetadata struct {
-	Title           string             `json:"title,omitempty"`
-	Subtitle        string             `json:"subtitle,omitempty"`
-	Art             *AudioImageWrapper `json:"art,omitempty"`
-	BackgroundImage *AudioImageWrapper `json:"backgroundImage,omitempty"`
-}
-
-// AudioImageWrapper ...
-type AudioImageWrapper struct {
-	Image AudioImage `json:"image"`
+	Title           string      `json:"title,omitempty"`
+	Subtitle        string      `json:"subtitle,omitempty"`
+	Art             *AudioImage `json:"art,omitempty"`
+	BackgroundImage *AudioImage `json:"backgroundImage,omitempty"`
 }
 
 // AudioImage contains the data for images used within Audio Directives
