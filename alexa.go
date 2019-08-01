@@ -407,7 +407,7 @@ func (r *Response) SetRepromptSSML(ssml string) {
 }
 
 // AddPlayAudioPlayerDirective adds an AudioPlayer directive to the Response.
-func (r *Response) AddPlayAudioPlayerDirective(playBehavior PlayBehavior, streamToken, url string, offsetInMilliseconds int) {
+func (r *Response) AddPlayAudioPlayerDirective(playBehavior PlayBehavior, streamToken, url string, offsetInMilliseconds int, metadata *AudioMetadata) {
 	d := PlayAudioDirective{
 		Type:         "AudioPlayer.Play",
 		PlayBehavior: playBehavior,
@@ -417,6 +417,7 @@ func (r *Response) AddPlayAudioPlayerDirective(playBehavior PlayBehavior, stream
 				URL:                  url,
 				OffsetInMilliseconds: offsetInMilliseconds,
 			},
+			Metadata: metadata,
 		},
 	}
 	r.Directives = append(r.Directives, d)
