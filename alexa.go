@@ -456,7 +456,7 @@ func (r *Response) AddDialogDirective(dialogType, slotToElicit, slotToConfirm st
 }
 
 // AddRenderDocumentDirective adds a RenderDocument directive to the Response.
-func (r *Response) AddRenderDocumentDirective(token string, document, datasources *interface{}, transforms *[]interface{}) {
+func (r *Response) AddRenderDocumentDirective(token string, document interface{}, datasources *interface{}, transforms *[]interface{}) {
 	d := RenderDocumentDirective{
 		Type:         "Alexa.Presentation.APL.RenderDocument",
 		Token:        token,
