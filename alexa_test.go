@@ -638,7 +638,7 @@ func (h *simpleAudioPlayerResponseHandler) OnLaunch(context.Context, *Request, *
 
 func (h *simpleAudioPlayerResponseHandler) OnIntent(context context.Context, request *Request, session *Session, aContext *Context, response *Response) error {
 
-	response.AddAudioPlayer("AudioPlayer.Play", "REPLACE_ALL", "track2-long-audio", "https://my-audio-hosting-site.com/audio/sample-song-2.mp3", 100)
+	response.AddPlayAudioPlayerDirective(ReplaceAll, "track2-long-audio", "https://my-audio-hosting-site.com/audio/sample-song-2.mp3", 100, nil)
 
 	return nil
 }
