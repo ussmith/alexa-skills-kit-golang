@@ -265,10 +265,11 @@ type DialogDirective struct {
 
 // RenderDocumentDirective contain directives for use with Amazon APL documents
 type RenderDocumentDirective struct {
-	Type        string       `json:"type"`
-	Token       string       `json:"token"`
-	Document    interface{}  `json:"document"`
-	DataSources *interface{} `json:"datasources,omitempty"`
+	Type         string         `json:"type"`
+	Token        string         `json:"token"`
+	Document     interface{}    `json:"document"`
+	DataSources  *interface{}   `json:"datasources,omitempty"`
+	Transformers *[]interface{} `json:"transformers,omitempty"`
 }
 
 // SupportsVideo returns true if this skill was initiated from
@@ -455,12 +456,13 @@ func (r *Response) AddDialogDirective(dialogType, slotToElicit, slotToConfirm st
 }
 
 // AddRenderDocumentDirective adds a RenderDocument directive to the Response.
-func (r *Response) AddRenderDocumentDirective(token string, document, datasources interface{}) {
+func (r *Response) AddRenderDocumentDirective(token string, document, datasources *interface{}, transforms *[]interface{}) {
 	d := RenderDocumentDirective{
-		Type:        "Alexa.Presentation.APL.RenderDocument",
-		Token:       token,
-		Document:    document,
-		DataSources: &datasources,
+		Type:         "Alexa.Presentation.APL.RenderDocument",
+		Token:        token,
+		Document:     document,
+		DataSources:  datasources,
+		Transformers: transforms,
 	}
 	r.Directives = append(r.Directives, d)
 }
